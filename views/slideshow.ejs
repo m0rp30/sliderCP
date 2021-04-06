@@ -1,0 +1,25 @@
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        var i=1
+        const interval = 3000
+
+        setInterval(() => {
+            if( i < <%= images.length %> ) {
+                i++
+            } else {
+                i=1
+            }
+
+            document.getElementById('image').src = 'Diapositiva' + i +'.JPG'
+        }, interval);
+    </script>
+</head>
+<body>
+    
+    <div >
+        <img class="centered" id="image" src=""/>
+    </div>
+</body>    
+</html>

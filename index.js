@@ -1,34 +1,26 @@
 const express = require('express')
+
 const app = express()
+app.set('view engine', 'ejs')
+app.use(express.static(__dirname + '/images'))
+app.use(express.static(__dirname + '/css'))
+
 const port = 3000
 
 const path = require('path')
 const fs = require('fs');
 const directoryPath = path.join(__dirname, 'images');
 
-const time = 1
-
 var images = []
 images = fs.readdirSync(directoryPath)
 
-var i = 0
-
-function setI() {
-    if(i < images.length -1 ) {
-        i++
-    } else {
-        i = 0
-    }
-}
-
-setInterval(() => {setI()}, time)
+fs.watchFile(directoryPath, (curr, prev) => {
+    images = fs.readdirSync(directoryPath)
+    // TODO: reload/refresh ejs page
+})
 
 app.get('/', (req, res) => {
-    fs.readFile(directoryPath + "/" + images[i], (err, data) => {
-        if (err) console.log(err);
-        res.writeHead(200, {'Content-Type': 'image/jpeg'});
-        res.end(data);
-    })
+    res.render('slideshow.ejs', {images: images})
 })
 
 app.listen(port, () => {
