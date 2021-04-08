@@ -2,17 +2,23 @@
 <head>
     <link rel="stylesheet" href="style.css">
     <script>
-        var i=1
+        var i=0
+        // Assegna ad images il valore passato tramite il template ejs
+        var images = <%- JSON.stringify(images) %>
+        images.sort((a,b) => {
+            return (Number(a.match(/(\d+)/g)) - Number((b.match(/(\d+)/g))));
+        })
         const interval = 3000
 
+        // Ad ogni intervallo cambia immagine
         setInterval(() => {
-            if( i < <%= images.length %> ) {
+            if( i < images.length - 1 ) {
                 i++
             } else {
-                i=1
+                i=0
             }
-
-            document.getElementById('image').src = 'Diapositiva' + i + '.JPG'; <!-- TODO: Get element of images -->
+            
+            document.getElementById('image').src = images[i];
         }, interval);
     </script>
 </head>

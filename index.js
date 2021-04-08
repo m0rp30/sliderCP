@@ -12,11 +12,28 @@ const fs = require('fs');
 const directoryPath = path.join(__dirname, 'images');
 
 var images = []
-images = fs.readdirSync(directoryPath)
 
+// Funzione che recupera le immagini in una data cartella
+function getImages(path) {
+    var array = []
+    var files = fs.readdirSync(path)
+    const regex = /jpg|JPG|png|PNG/g
+    
+    files.forEach(file => {
+        if (file.match(regex)) {
+            array.push(file)
+        }
+    })
+    return array
+}
+
+// Assegna le immagini all'array images
+images = getImages(directoryPath)
+
+// Controlla se ci sono cambiamenti nella directory
 fs.watchFile(directoryPath, (curr, prev) => {
-    images = fs.readdirSync(directoryPath)
-    // TODO: reload/refresh ejs page
+     images = getImages(directoryPath)
+     // TODO: Refresha la pagina nel caso ci siano stati cambiamenti nella directory
 })
 
 app.get('/', (req, res) => {
